@@ -4,7 +4,7 @@
     ViewData["Title"] = "Gender";
 }
 
-<h1>Index</h1>
+<h1>Gender</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -25,9 +25,9 @@
                 @Html.DisplayFor(modelItem => item.NamaGender)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdGender">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdGender">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdGender">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.IdGender"><i class="fa fa-marker fa-lg"></i></a> |
+                <a asp-action="Details" asp-route-id="@item.IdGender"><i class="fas fa-list fa-lg"></i></a> |
+                <a asp-action="Delete" asp-route-id="@item.IdGender"><i class="fa fa-trash fa-lg"></i></a>
             </td>
         </tr>
 }
