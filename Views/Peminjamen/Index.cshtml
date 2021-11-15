@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<RentalKendaraan.Models.Peminjaman>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Peminjaman";
 }
 
 <h1>Index</h1>
@@ -13,19 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TglPeminjaman)
+                @Html.DisplayName("Tanggal Peminjaman")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Biaya)
+                @Html.DisplayName("Biaya")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdCustomerNavigation)
+                @Html.DisplayName("ID Customer")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdJaminanNavigation)
+                @Html.DisplayName("ID Jaminan")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdKendaraanNavigation)
+                @Html.DisplayName("ID Kendaraan")
             </th>
             <th></th>
         </tr>
