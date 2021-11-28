@@ -13,17 +13,17 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdCustomer" class="control-label"></label>
+                <label asp-for="IdCustomer" class="control-label">ID Customer</label>
                 <input asp-for="IdCustomer" class="form-control" />
                 <span asp-validation-for="IdCustomer" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NamaCustomer" class="control-label"></label>
+                <label asp-for="NamaCustomer" class="control-label">Nama Customer</label>
                 <input asp-for="NamaCustomer" class="form-control" />
                 <span asp-validation-for="NamaCustomer" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Nik" class="control-label"></label>
+                <label asp-for="Nik" class="control-label">NIK</label>
                 <input asp-for="Nik" class="form-control" />
                 <span asp-validation-for="Nik" class="text-danger"></span>
             </div>
@@ -33,12 +33,12 @@
                 <span asp-validation-for="Alamat" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NoHp" class="control-label"></label>
+                <label asp-for="NoHp" class="control-label">No HP</label>
                 <input asp-for="NoHp" class="form-control" />
                 <span asp-validation-for="NoHp" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdGender" class="control-label"></label>
+                <label asp-for="IdGender" class="control-label">ID Gender</label>
                 <select asp-for="IdGender" class ="form-control" asp-items="ViewBag.IdGender"></select>
             </div>
             <div class="form-group">
