@@ -17,6 +17,7 @@ namespace RentalKendaraan.Models
         public int IdPeminjaman { get; set; }
 
         [Required(ErrorMessage = "Tanggal Peminjaman tidak boleh kosong!")]
+        [DisplayFormat(ApplyFormatInEditMode =true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime? TglPeminjaman { get; set; }
 
         [Required(ErrorMessage = "ID Kendaraan tidak boleh kosong!")]

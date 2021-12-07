@@ -9,6 +9,16 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+@using (Html.BeginForm("Index", "Customers", FormMethod.Get))
+{
+    <p>
+        Gender: @Html.DropDownList("gndr", "Pilih Gender")
+        Cari Data: @Html.TextBox("searchString")
+        <input type="submit" value="Filter" />
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -25,35 +35,36 @@
                 @Html.DisplayName("No HP")
             </th>
             <th>
-                @Html.DisplayName("ID Gender")
+                @Html.DisplayName("Gender")
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NamaCustomer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nik)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Alamat)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NoHp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdGenderNavigation.IdGender)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdCustomer"><i class="fa fa-marker fa-lg"></i></a> |
-                <a asp-action="Details" asp-route-id="@item.IdCustomer"><i class="fas fa-list fa-lg"></i></a> |
-                <a asp-action="Delete" asp-route-id="@item.IdCustomer"><i class="fa fa-trash fa-lg"></i></a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NamaCustomer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nik)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Alamat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoHp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdGenderNavigation.NamaGender)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdCustomer"><i class="fa fa-marker fa-lg"></i></a> |
+                    <a asp-action="Details" asp-route-id="@item.IdCustomer"><i class="fas fa-list fa-lg"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdCustomer"><i class="fa fa-trash fa-lg"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

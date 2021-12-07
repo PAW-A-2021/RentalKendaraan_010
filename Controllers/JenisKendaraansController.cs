@@ -19,9 +19,33 @@ namespace RentalKendaraan.Controllers
         }
 
         // GET: JenisKendaraans
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string jns, string searchString)
         {
-            return View(await _context.JenisKendaraans.ToListAsync());
+            //buat list menyimpan jenis kendaraan
+            var jnsList = new List<string>();
+            //query
+            var jnsQuery = from d in _context.JenisKendaraans orderby d.NamaJenisKendaraan select d.NamaJenisKendaraan;
+
+            jnsList.AddRange(jnsQuery.Distinct());
+
+            //untuk menampilkan di view
+            ViewBag.jns = new SelectList(jnsList);
+
+            var menu = from m in _context.JenisKendaraans select m;
+
+            //untuk memilih dropdownlist jenis kendaraan
+            if (!string.IsNullOrEmpty(jns))
+            {
+                menu = menu.Where(x => x.NamaJenisKendaraan == jns);
+            }
+
+            //untuk search data
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                menu = menu.Where(s => s.NamaJenisKendaraan.Contains(searchString));
+            }
+
+            return View(await menu.ToListAsync());
         }
 
         // GET: JenisKendaraans/Details/5

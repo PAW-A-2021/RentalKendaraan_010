@@ -19,9 +19,33 @@ namespace RentalKendaraan.Controllers
         }
 
         // GET: Jaminans
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string jmn, string searchString)
         {
-            return View(await _context.Jaminans.ToListAsync());
+            //buat list menyimpan jaminan
+            var jmnList = new List<string>();
+            //query
+            var jmnQuery = from d in _context.Jaminans orderby d.NamaJaminan select d.NamaJaminan;
+
+            jmnList.AddRange(jmnQuery.Distinct());
+
+            //untuk menampilkan di view
+            ViewBag.jmn = new SelectList(jmnList);
+
+            var menu = from m in _context.Jaminans select m;
+
+            //untuk memilih dropdownlist nama jaminan
+            if (!string.IsNullOrEmpty(jmn))
+            {
+                menu = menu.Where(x => x.NamaJaminan == jmn);
+            }
+
+            //untuk search data
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                menu = menu.Where(s => s.NamaJaminan.Contains(searchString));
+            }
+
+            return View(await menu.ToListAsync());
         }
 
         // GET: Jaminans/Details/5

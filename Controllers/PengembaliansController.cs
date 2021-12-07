@@ -19,10 +19,32 @@ namespace RentalKendaraan.Controllers
         }
 
         // GET: Pengembalians
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string pgmb, string searchString)
         {
-            var rent_KendaraanContext = _context.Pengembalians.Include(p => p.IdKondisiNavigation).Include(p => p.IdPeminjamanNavigation);
-            return View(await rent_KendaraanContext.ToListAsync());
+            //buat list menyimpan tanggal
+            var pgmbList = new List<string>();
+            //query
+            var pgmbQuery = from d in _context.Pengembalians orderby d.TglPengembalian select d.TglPengembalian.ToString();
+
+            pgmbList.AddRange(pgmbQuery.Distinct());
+
+            //untuk menampilkan di view
+            ViewBag.pgmb = new SelectList(pgmbList);
+
+            var menu = from m in _context.Pengembalians.Include(p => p.IdKondisiNavigation).Include(p => p.IdPeminjamanNavigation) select m;
+
+            //untuk memilih dropdownlist gender
+            if (!string.IsNullOrEmpty(pgmb))
+            {
+                menu = menu.Where(x => x.TglPengembalian.ToString() == pgmb);
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                menu = menu.Where(s => s.IdKondisiNavigation.NamaKondisi.Contains(searchString) || s.IdPeminjamanNavigation.TglPeminjaman.ToString().Contains(searchString) || s.TglPengembalian.ToString().Contains(searchString) || s.Denda.ToString().Contains(searchString));
+            }
+
+            return View(await menu.ToListAsync());
         }
 
         // GET: Pengembalians/Details/5

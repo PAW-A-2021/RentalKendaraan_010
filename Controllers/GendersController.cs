@@ -19,9 +19,33 @@ namespace RentalKendaraan.Controllers
         }
 
         // GET: Genders
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string gndr, string searchString)
         {
-            return View(await _context.Genders.ToListAsync());
+            //buat list menyimpan gender
+            var gndrList = new List<string>();
+            //query
+            var gndrQuery = from d in _context.Genders orderby d.NamaGender select d.NamaGender;
+
+            gndrList.AddRange(gndrQuery.Distinct());
+
+            //untuk menampilkan di view
+            ViewBag.gndr = new SelectList(gndrList);
+
+            var menu = from m in _context.Genders select m;
+
+            //untuk memilih dropdownlist gender
+            if (!string.IsNullOrEmpty(gndr))
+            {
+                menu = menu.Where(x => x.NamaGender == gndr);
+            }
+
+            //untuk search data
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                menu = menu.Where(s => s.NamaGender.Contains(searchString));
+            }
+
+            return View(await menu.ToListAsync());
         }
 
         // GET: Genders/Details/5

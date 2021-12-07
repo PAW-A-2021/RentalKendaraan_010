@@ -9,6 +9,16 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+@using (Html.BeginForm("Index", "Genders", FormMethod.Get))
+{
+    <p>
+        Gender: @Html.DropDownList("gndr", "Pilih Gender")
+        Cari Data: @Html.TextBox("searchString")
+        <input type="submit" value="Filter" />
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -19,17 +29,18 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NamaGender)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdGender"><i class="fa fa-marker fa-lg"></i></a> |
-                <a asp-action="Details" asp-route-id="@item.IdGender"><i class="fas fa-list fa-lg"></i></a> |
-                <a asp-action="Delete" asp-route-id="@item.IdGender"><i class="fa fa-trash fa-lg"></i></a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NamaGender)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdGender"><i class="fa fa-marker fa-lg"></i></a> |
+                    <a asp-action="Details" asp-route-id="@item.IdGender"><i class="fas fa-list fa-lg"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdGender"><i class="fa fa-trash fa-lg"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

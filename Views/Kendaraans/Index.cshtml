@@ -9,6 +9,16 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+@using (Html.BeginForm("Index", "Kendaraans", FormMethod.Get))
+{
+    <p>
+        Ketersediaan: @Html.DropDownList("ktsd", "Pilih Ketersediaan")
+        Cari Data: @Html.TextBox("searchString")
+        <input type="submit" value="Filter" />
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -31,29 +41,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NamaKendaraan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NoPolisi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NoStnk)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ketersediaan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdJenisKendaraanNavigation.IdJenisKendaraan)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdKendaraan"><i class="fa fa-marker fa-lg"></i></a> |
-                <a asp-action="Details" asp-route-id="@item.IdKendaraan"><i class="fas fa-list fa-lg"></i></a> |
-                <a asp-action="Delete" asp-route-id="@item.IdKendaraan"><i class="fa fa-trash fa-lg"></i></a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NamaKendaraan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoPolisi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoStnk)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ketersediaan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdJenisKendaraanNavigation.IdJenisKendaraan)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdKendaraan"><i class="fa fa-marker fa-lg"></i></a> |
+                    <a asp-action="Details" asp-route-id="@item.IdKendaraan"><i class="fas fa-list fa-lg"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdKendaraan"><i class="fa fa-trash fa-lg"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
