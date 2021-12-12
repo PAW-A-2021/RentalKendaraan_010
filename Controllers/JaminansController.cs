@@ -19,7 +19,7 @@ namespace RentalKendaraan.Controllers
         }
 
         // GET: Jaminans
-        public async Task<IActionResult> Index(string jmn, string searchString)
+        public async Task<IActionResult> Index(string jmn, string searchString, string sortOrder, string currentFilter, int? pageNumber)
         {
             //buat list menyimpan jaminan
             var jmnList = new List<string>();
@@ -45,7 +45,35 @@ namespace RentalKendaraan.Controllers
                 menu = menu.Where(s => s.NamaJaminan.Contains(searchString));
             }
 
-            return View(await menu.ToListAsync());
+            //membuat pagedList
+            ViewData["CurrentSort"] = sortOrder;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            //definisi jumlah data pada halaman
+            int pageSize = 5;
+
+            //untuk sorting
+            ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    menu = menu.OrderByDescending(s => s.NamaJaminan);
+                    break;
+                default: //name ascending
+                    menu = menu.OrderBy(s => s.NamaJaminan);
+                    break;
+            }
+
+            return View(await PaginatedList<Jaminan>.CreateAsync(menu.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Jaminans/Details/5

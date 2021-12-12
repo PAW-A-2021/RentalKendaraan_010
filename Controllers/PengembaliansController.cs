@@ -19,7 +19,7 @@ namespace RentalKendaraan.Controllers
         }
 
         // GET: Pengembalians
-        public async Task<IActionResult> Index(string pgmb, string searchString)
+        public async Task<IActionResult> Index(string pgmb, string searchString, string sortOrder, string currentFilter, int? pageNumber)
         {
             //buat list menyimpan tanggal
             var pgmbList = new List<string>();
@@ -44,7 +44,35 @@ namespace RentalKendaraan.Controllers
                 menu = menu.Where(s => s.IdKondisiNavigation.NamaKondisi.Contains(searchString) || s.IdPeminjamanNavigation.TglPeminjaman.ToString().Contains(searchString) || s.TglPengembalian.ToString().Contains(searchString) || s.Denda.ToString().Contains(searchString));
             }
 
-            return View(await menu.ToListAsync());
+            //membuat pagedList
+            ViewData["CurrentSort"] = sortOrder;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            //definisi jumlah data pada halaman
+            int pageSize = 5;
+
+            //untuk sorting
+            ViewData["DateSortParm"] = String.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
+
+            switch (sortOrder)
+            {
+                case "date_desc":
+                    menu = menu.OrderByDescending(s => s.TglPengembalian);
+                    break;
+                default: //name ascending
+                    menu = menu.OrderBy(s => s.TglPengembalian);
+                    break;
+            }
+
+            return View(await PaginatedList<Pengembalian>.CreateAsync(menu.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Pengembalians/Details/5

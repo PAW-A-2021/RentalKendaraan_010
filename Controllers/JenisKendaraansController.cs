@@ -19,7 +19,7 @@ namespace RentalKendaraan.Controllers
         }
 
         // GET: JenisKendaraans
-        public async Task<IActionResult> Index(string jns, string searchString)
+        public async Task<IActionResult> Index(string jns, string searchString, string sortOrder, string currentFilter, int? pageNumber)
         {
             //buat list menyimpan jenis kendaraan
             var jnsList = new List<string>();
@@ -45,7 +45,35 @@ namespace RentalKendaraan.Controllers
                 menu = menu.Where(s => s.NamaJenisKendaraan.Contains(searchString));
             }
 
-            return View(await menu.ToListAsync());
+            //membuat pagedList
+            ViewData["CurrentSort"] = sortOrder;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            //definisi jumlah data pada halaman
+            int pageSize = 5;
+
+            //untuk sorting
+            ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    menu = menu.OrderByDescending(s => s.NamaJenisKendaraan);
+                    break;
+                default: //name ascending
+                    menu = menu.OrderBy(s => s.NamaJenisKendaraan);
+                    break;
+            }
+
+            return View(await PaginatedList<JenisKendaraan>.CreateAsync(menu.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: JenisKendaraans/Details/5

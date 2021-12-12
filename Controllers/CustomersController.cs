@@ -19,7 +19,7 @@ namespace RentalKendaraan.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(string gndr, string searchString)
+        public async Task<IActionResult> Index(string gndr, string searchString, string sortOrder, string currentFilter, int? pageNumber)
         {
             //buat list menyimpan ketersediaan
             var gndrList = new List<string>();
@@ -45,7 +45,42 @@ namespace RentalKendaraan.Controllers
                  menu = menu.Where(s => s.NamaCustomer.Contains(searchString) || s.Nik.Contains(searchString) || s.Alamat.Contains(searchString) || s.NoHp.Contains(searchString));
             }
 
-            return View(await menu.ToListAsync());
+            //membuat pagedList
+            ViewData["CurrentSort"] = sortOrder;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            //definisi jumlah data pada halaman
+            int pageSize = 5;
+
+            //untuk sorting
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["NIKSortParm"] = sortOrder == "Nik" ? "Nik_desc" : "Nik";
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    menu = menu.OrderByDescending(s => s.NamaCustomer);
+                    break;
+                case "Nik":
+                    menu = menu.OrderBy(s => s.Nik);
+                    break;
+                case "Nik_desc":
+                    menu = menu.OrderByDescending(s => s.Nik);
+                    break;
+                default: //name ascending
+                    menu = menu.OrderBy(s => s.NamaCustomer);
+                    break;
+            }
+
+            return View(await PaginatedList<Customer>.CreateAsync(menu.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Customers/Details/5
